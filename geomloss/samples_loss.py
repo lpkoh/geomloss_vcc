@@ -30,6 +30,10 @@ routines = {
         "online": partial(kernel_online, name="energy"),
         "multiscale": partial(kernel_multiscale, name="energy"),
     },
+    "energy_l1": {
+        "tensorized": partial(kernel_tensorized, name="energy_l1"),
+        "online": partial(kernel_online, name="energy_l1"),
+    },
     "gaussian": {
         "tensorized": partial(kernel_tensorized, name="gaussian"),
         "online": partial(kernel_online, name="gaussian"),

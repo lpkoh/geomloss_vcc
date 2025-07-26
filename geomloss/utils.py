@@ -63,6 +63,31 @@ def distances(x, y, use_keops=False):
         return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-8))
 
 
+def l1_distances(x, y, use_keops=False):
+
+    if use_keops and keops_available:
+        if x.dim() == 2:
+            x_i = LazyTensor(x[:, None, :])      # (N,1,D)
+            y_j = LazyTensor(y[None, :, :])      # (1,M,D)
+        elif x.dim() == 3:
+            x_i = LazyTensor(x[:, :, None, :])   # (B,N,1,D)
+            y_j = LazyTensor(y[:, None, :, :])   # (B,1,M,D)
+        else:
+            raise ValueError("Incorrect number of dimensions")
+
+        return (x_i - y_j).abs().sum(-1)         # L1
+
+    else:
+        if x.dim() == 2:
+            # (N,1,D) – (1,M,D) -> (N,M,D) -> abs -> sum_D
+            return (x[:, None, :] - y[None, :, :]).abs().sum(-1)
+        elif x.dim() == 3:
+            # (B,N,1,D) – (B,1,M,D) -> (B,N,M,D)
+            return (x[:, :, None, :] - y[:, None, :, :]).abs().sum(-1)
+        else:
+            raise ValueError("Incorrect number of dimensions")
+
+
 #######################################
 # On grids
 #######################################
