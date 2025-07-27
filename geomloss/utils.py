@@ -64,11 +64,16 @@ def distances(x, y, use_keops=False):
 
 
 def l1_distances(x, y, use_keops=False):
-    # torch.cdist handles 2‑D and 3‑D (batched) inputs directly.
-    if x.dim() not in (2, 3):
-        raise ValueError("Expected x,y to have 2 or 3 dimensions")
+    if x.dim() == 2:
+        x_i = LazyTensor(x[:, None, :])       # (N,1,D)
+        y_j = LazyTensor(y[None, :, :])       # (1,M,D)
+    elif x.dim() == 3:
+        x_i = LazyTensor(x[:, :, None, :])    # (B,N,1,D)
+        y_j = LazyTensor(y[:, None, :, :])    # (B,1,M,D)
+    else:
+        raise ValueError("x must be 2‑D or 3‑D")
 
-    return torch.cdist(x, y, p=1)
+    return (x_i - y_j).abs().sum(-1)          # (N,M) or (B,N,M)
 
 
 #######################################
