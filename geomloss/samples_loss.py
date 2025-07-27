@@ -34,6 +34,10 @@ routines = {
         "tensorized": partial(kernel_tensorized, name="energy_l1"),
         "online": partial(kernel_online, name="energy_l1"),
     },
+    "energy_rawdispersion_normalized": {
+        "tensorized": partial(kernel_tensorized, name="energy_rawdispersion_normalized"),
+        "online": partial(kernel_online, name="energy_rawdispersion_normalized"),
+    },
     "gaussian": {
         "tensorized": partial(kernel_tensorized, name="gaussian"),
         "online": partial(kernel_online, name="gaussian"),
