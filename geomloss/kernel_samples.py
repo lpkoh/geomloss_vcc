@@ -37,7 +37,7 @@ try:  # Import the keops library, www.kernel-operations.io
 except:
     keops_available = False
 
-from .utils import scal, squared_distances, distances, l1_distances
+from .utils import scal, squared_distances, distances, l1_distances, distances_rawdispersion_normalized
 
 
 class DoubleGrad(torch.autograd.Function):
@@ -86,11 +86,16 @@ def energy_l1_kernel(x, y, blur=None, use_keops=False, ranges=None):
     return -l1_distances(x, y)
 
 
+def energy_rawdispersion_normalized_kernel(x, y, blur=None, use_keops=False, ranges=None):
+    return -distances_rawdispersion_normalized(x, y)
+
+
 kernel_routines = {
     "gaussian": gaussian_kernel,
     "laplacian": laplacian_kernel,
     "energy": energy_kernel,
     "energy_l1": energy_l1_kernel,
+    "energy_rawdispersion_normalized": energy_rawdispersion_normalized_kernel,
 }
 
 

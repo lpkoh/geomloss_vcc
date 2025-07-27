@@ -76,6 +76,49 @@ def l1_distances(x, y, use_keops=False):
     return (x_i - y_j).abs().sum(-1)          # (N,M) or (B,N,M)
 
 
+def squared_distances_weighted(x, y, weight_path):
+    # Load weights
+    weights = torch.load(weight_path)
+
+    # Ensure weights are on the same device as input
+    weights = weights.to(x.device)
+
+    # Validate weights shape
+    expected_D = x.shape[-1]
+    if weights.shape[0] != expected_D:
+        raise ValueError(f"Weights dimension {weights.shape[0]} doesn't match data dimension {expected_D}")
+
+    # Apply sqrt to weights since we're computing squared distances
+    # (weighted distance)^2 = sum((sqrt(w_i) * (x_i - y_i))^2)
+    weights_sqrt = torch.sqrt(weights)
+
+    # Apply weights to input data
+    if x.dim() == 2:
+        x = x * weights_sqrt.unsqueeze(0)  # (N,D) * (1,D)
+        y = y * weights_sqrt.unsqueeze(0)  # (M,D) * (1,D)
+    elif x.dim() == 3:
+        x = x * weights_sqrt.unsqueeze(0).unsqueeze(0)  # (B,N,D) * (1,1,D)
+        y = y * weights_sqrt.unsqueeze(0).unsqueeze(0)  # (B,M,D) * (1,1,D)
+
+    if x.dim() == 2:
+        D_xx = (x * x).sum(-1).unsqueeze(1)  # (N,1)
+        D_xy = torch.matmul(x, y.permute(1, 0))  # (N,D) @ (D,M) = (N,M)
+        D_yy = (y * y).sum(-1).unsqueeze(0)  # (1,M)
+    elif x.dim() == 3:  # Batch computation
+        D_xx = (x * x).sum(-1).unsqueeze(2)  # (B,N,1)
+        D_xy = torch.matmul(x, y.permute(0, 2, 1))  # (B,N,D) @ (B,D,M) = (B,N,M)
+        D_yy = (y * y).sum(-1).unsqueeze(1)  # (B,1,M)
+    else:
+        print("x.shape : ", x.shape)
+        raise ValueError("Incorrect number of dimensions")
+
+    return D_xx - 2 * D_xy + D_yy
+
+
+def distances_rawdispersion_normalized(x, y):
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/gene_dispersion_normalized.pt'), 1e-8))
+
+
 #######################################
 # On grids
 #######################################
