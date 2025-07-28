@@ -119,6 +119,14 @@ def distances_rawdispersion_normalized(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/gene_dispersion_normalized.pt'), 1e-8))
 
 
+def distances_perpert_meandiff(x, y):
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff.pt'), 1e-8))
+
+
+def distances_perpert_meandiff_rooted(x, y):
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_rooted.pt'), 1e-8))
+
+
 #######################################
 # On grids
 #######################################
