@@ -46,6 +46,10 @@ routines = {
         "tensorized": partial(kernel_tensorized, name="energy_perpert_meandiff_rooted"),
         "online": partial(kernel_online, name="energy_perpert_meandiff_rooted"),
     },
+    "energy_perpert_meandiff_clamped": {
+        "tensorized": partial(kernel_tensorized, name="energy_perpert_meandiff_clamped"),
+        "online": partial(kernel_online, name="energy_perpert_meandiff_clamped"),
+    },
     "gaussian": {
         "tensorized": partial(kernel_tensorized, name="gaussian"),
         "online": partial(kernel_online, name="gaussian"),

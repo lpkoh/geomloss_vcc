@@ -127,6 +127,10 @@ def distances_perpert_meandiff_rooted(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_rooted.pt'), 1e-8))
 
 
+def distances_perpert_meandiff_clamped(x, y):
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped_0.6_3.pt'), 1e-8))
+
+
 #######################################
 # On grids
 #######################################

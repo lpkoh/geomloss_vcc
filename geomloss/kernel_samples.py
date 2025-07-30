@@ -98,6 +98,10 @@ def energy_perpert_meandiff_rooted_kernel(x, y, blur=None, use_keops=False, rang
     return -distances_perpert_meandiff_rooted(x, y)
 
 
+def energy_perpert_meandiff_clamped_kernel(x, y, blur=None, use_keops=False, ranges=None):
+    return -distances_perpert_meandiff_clamped(x, y)
+
+
 kernel_routines = {
     "gaussian": gaussian_kernel,
     "laplacian": laplacian_kernel,
@@ -106,6 +110,7 @@ kernel_routines = {
     "energy_rawdispersion_normalized": energy_rawdispersion_normalized_kernel,
     "energy_perpert_meandiff": energy_perpert_meandiff_kernel,
     "energy_perpert_meandiff_rooted": energy_perpert_meandiff_rooted_kernel,
+    "energy_perpert_meandiff_clamped": energy_perpert_meandiff_clamped_kernel,
 }
 
 
