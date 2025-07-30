@@ -37,7 +37,7 @@ try:  # Import the keops library, www.kernel-operations.io
 except:
     keops_available = False
 
-from .utils import scal, squared_distances, distances, l1_distances, distances_rawdispersion_normalized, distances_perpert_meandiff, distances_perpert_meandiff_rooted
+from .utils import scal, squared_distances, distances, l1_distances, distances_rawdispersion_normalized, distances_perpert_meandiff, distances_perpert_meandiff_rooted, distances_perpert_meandiff_clamped
 
 
 class DoubleGrad(torch.autograd.Function):
