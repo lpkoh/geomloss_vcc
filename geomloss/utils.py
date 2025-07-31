@@ -108,18 +108,19 @@ def distances(x, y, use_keops=False):
 
 
 def distances_rawdispersion_normalized(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/gene_dispersion_normalized.pt'), 1e-6))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/gene_dispersion_normalized.pt'), 1e-6))
 
 
 def distances_perpert_meandiff(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff.pt'), 1e-6))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/perpert_meandiff.pt'), 1e-6))
 
 
 def distances_perpert_meandiff_clamped(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped.pt'), 1e-6))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/perpert_meandiff_clamped.pt'), 1e-6))
 
 
-def distances_euclidean_cosine(x, y, alpha=10):
+def distances_euclidean_cosine(x, y):
+    alpha = float(open('loss_files/alpha.txt').read())
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6)) + alpha * cosine_distance(x, y)
 
 #######################################
