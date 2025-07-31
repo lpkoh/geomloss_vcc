@@ -45,7 +45,8 @@ from .utils import (
     cosine_distance, 
     distances_euclidean, 
     distances_gene_weighted_euclidean,
-    distances_euclidean_cosine
+    distances_euclidean_cosine,
+    distances_sliced
 )
 
 
@@ -103,13 +104,18 @@ def energy_euclidean_cosine_kernel(x, y, blur=None, use_keops=False, ranges=None
     return -distances_euclidean_cosine(x, y)
 
 
+def energy_sliced_kernel(x, y, blur=None, use_keops=False, ranges=None):
+    return -distances_sliced(x, y, indices_path, distances_path)
+
+
 kernel_routines = {
     "gaussian": gaussian_kernel,
     "laplacian": laplacian_kernel,
     "energy_euclidean": energy_euclidean_kernel,
     "energy_l1": energy_l1_kernel,
     "energy_gene_weighted_euclidean": energy_gene_weighted_euclidean_kernel,
-    "energy_euclidean_cosine": energy_euclidean_cosine_kernel
+    "energy_euclidean_cosine": energy_euclidean_cosine_kernel,
+    "energy_sliced": energy_sliced_kernel
 }
 
 

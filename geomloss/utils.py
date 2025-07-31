@@ -103,6 +103,10 @@ def cosine_distance(x, y, eps=1e-3):
     return 1.0 - cos_sim.clamp(-1.0, 1.0)
 
 
+def distances(x, y): #placeholder
+    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
+
+
 def distances_euclidean(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
 
@@ -116,8 +120,31 @@ def distances_euclidean_cosine(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6)) + alpha * cosine_distance(x, y)
 
 
-def distances(x, y): #placeholder
-    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
+def distances_sliced(x, y, indices_path, distances_path):
+    # --- load index blocks --------------------------------------------------
+    slices = torch.load(indices_path, map_location="cpu")
+    slices = [idx.to(x.device) for idx in slices]
+
+    # --- load distance keywords --------------------------------------------
+    with open(distances_path, "r", encoding="utf-8") as f:
+        modes = [ln.strip().lower() for ln in f if ln.strip()]
+
+    if len(slices) != len(modes):
+        raise ValueError(
+            f"Length mismatch: {len(slices)} index blocks vs {len(modes)} keywords"
+        )
+
+    # --- iterate and accumulate --------------------------------------------
+    total = None
+    for idx, mode in zip(slices, modes):
+        if mode == "squared_distances":
+            d = torch.sqrt(torch.clamp_min(squared_distances(x[..., idx], y[..., idx]), 1e-6))
+        else:
+            continue
+        total = d if total is None else total + d
+    if total is None:
+        raise RuntimeError("No distances were accumulated – check distance keywords.")
+    return total
 
 
 #######################################
