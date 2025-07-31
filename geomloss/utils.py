@@ -121,6 +121,8 @@ def distances_euclidean_cosine(x, y):
 
 
 def distances_sliced(x, y, indices_path, distances_path):
+    indices_path = 'loss_files/indices.pt'
+    distances_path = 'loss_files/distances.txt'
     # --- load index blocks --------------------------------------------------
     slices = torch.load(indices_path, map_location="cpu")
     slices = [idx.to(x.device) for idx in slices]
