@@ -44,7 +44,6 @@ from .utils import (
     l1_distances, 
     distances_rawdispersion_normalized, 
     distances_perpert_meandiff, 
-    distances_perpert_meandiff_rooted, 
     distances_perpert_meandiff_clamped
 )
 
@@ -103,10 +102,6 @@ def energy_perpert_meandiff_kernel(x, y, blur=None, use_keops=False, ranges=None
     return -distances_perpert_meandiff(x, y)
 
 
-def energy_perpert_meandiff_rooted_kernel(x, y, blur=None, use_keops=False, ranges=None):
-    return -distances_perpert_meandiff_rooted(x, y)
-
-
 def energy_perpert_meandiff_clamped_kernel(x, y, blur=None, use_keops=False, ranges=None):
     return -distances_perpert_meandiff_clamped(x, y)
 
@@ -118,7 +113,6 @@ kernel_routines = {
     "energy_l1": energy_l1_kernel,
     "energy_rawdispersion_normalized": energy_rawdispersion_normalized_kernel,
     "energy_perpert_meandiff": energy_perpert_meandiff_kernel,
-    "energy_perpert_meandiff_rooted": energy_perpert_meandiff_rooted_kernel,
     "energy_perpert_meandiff_clamped": energy_perpert_meandiff_clamped_kernel,
 }
 
