@@ -78,7 +78,7 @@ def gaussian_kernel(x, y, blur=0.05, use_keops=False, ranges=None):
 
 
 def laplacian_kernel(x, y, blur=0.05, use_keops=False, ranges=None):
-    C = distances(x / blur, y / blur, use_keops=use_keops)
+    C = distances_euclidean(x / blur, y / blur, use_keops=use_keops)
     K = (-C).exp()
 
     if use_keops and ranges is not None:
