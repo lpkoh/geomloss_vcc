@@ -40,10 +40,6 @@ def squared_distances(x, y):
     return D_xx - 2 * D_xy + D_yy
 
 
-def distances(x, y, use_keops=False):
-    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-8))
-
-
 def l1_distances(x, y, use_keops=False):
     if x.dim() == 2:
         x_i = LazyTensor(x[:, None, :])       # (N,1,D)
@@ -93,16 +89,20 @@ def squared_distances_weighted(x, y, weight_path):
     return D_xx - 2 * D_xy + D_yy
 
 
+def distances(x, y, use_keops=False):
+    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
+
+
 def distances_rawdispersion_normalized(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/gene_dispersion_normalized.pt'), 1e-8))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/gene_dispersion_normalized.pt'), 1e-6))
 
 
 def distances_perpert_meandiff(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff.pt'), 1e-8))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff.pt'), 1e-6))
 
 
 def distances_perpert_meandiff_clamped(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped_0.75_2.pt'), 1e-8))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped_0.75_2.pt'), 1e-6))
 
 
 #######################################
