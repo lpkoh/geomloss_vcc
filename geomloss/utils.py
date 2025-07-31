@@ -89,7 +89,7 @@ def squared_distances_weighted(x, y, weight_path):
     return D_xx - 2 * D_xy + D_yy
 
 
-def cosine_distance(x, y, eps=1e-6):
+def cosine_distance(x, y, eps=1e-3):
     # L2 normalise first
     x_norm = normalize(x, p=2, dim=-1, eps=eps)
     y_norm = normalize(y, p=2, dim=-1, eps=eps)
