@@ -89,6 +89,20 @@ def squared_distances_weighted(x, y, weight_path):
     return D_xx - 2 * D_xy + D_yy
 
 
+def cosine_distance(x, y, eps=1e-6):
+    # L2 normalise first
+    x_norm = F.normalize(x, p=2, dim=-1, eps=eps)
+    y_norm = F.normalize(y, p=2, dim=-1, eps=eps)
+
+    if x_norm.dim() == 2:
+        cos_sim = x_norm @ y_norm.T # (N,M)
+    elif x_norm.dim() == 3:
+        cos_sim = torch.matmul(x_norm, y_norm.transpose(1, 2)) # (B,N,M)
+    else:
+        raise ValueError("x must have 2 or 3 dims")
+    return 1.0 - cos_sim.clamp(-1.0, 1.0)
+
+
 def distances(x, y, use_keops=False):
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
 
@@ -102,8 +116,11 @@ def distances_perpert_meandiff(x, y):
 
 
 def distances_perpert_meandiff_clamped(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped_0.75_2.pt'), 1e-6))
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'gene_weights/perpert_meandiff_clamped.pt'), 1e-6))
 
+
+def distances_euclidean_cosine(x, y, alpha=10):
+    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6)) + alpha * cosine_distance(x, y)
 
 #######################################
 # On grids

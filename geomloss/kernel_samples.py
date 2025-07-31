@@ -44,7 +44,8 @@ from .utils import (
     l1_distances, 
     distances_rawdispersion_normalized, 
     distances_perpert_meandiff, 
-    distances_perpert_meandiff_clamped
+    distances_perpert_meandiff_clamped,
+    distances_euclidean_cosine
 )
 
 
@@ -106,6 +107,10 @@ def energy_perpert_meandiff_clamped_kernel(x, y, blur=None, use_keops=False, ran
     return -distances_perpert_meandiff_clamped(x, y)
 
 
+def energy_euclidean_cosine_kernel(x, y, blur=None, use_keops=False, ranges=None):
+    return -distances_euclidean_cosine(x, y)
+
+
 kernel_routines = {
     "gaussian": gaussian_kernel,
     "laplacian": laplacian_kernel,
@@ -114,6 +119,7 @@ kernel_routines = {
     "energy_rawdispersion_normalized": energy_rawdispersion_normalized_kernel,
     "energy_perpert_meandiff": energy_perpert_meandiff_kernel,
     "energy_perpert_meandiff_clamped": energy_perpert_meandiff_clamped_kernel,
+    "energy_euclidean_cosine": energy_euclidean_cosine_kernel,
 }
 
 
