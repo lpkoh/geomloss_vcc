@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from torch.nn.functional import conv1d, avg_pool2d, avg_pool3d, interpolate
+from torch.nn.functional import conv1d, avg_pool2d, avg_pool3d, interpolate, normalize
 
 
 try:  # Import the keops library, www.kernel-operations.io
@@ -91,8 +91,8 @@ def squared_distances_weighted(x, y, weight_path):
 
 def cosine_distance(x, y, eps=1e-6):
     # L2 normalise first
-    x_norm = F.normalize(x, p=2, dim=-1, eps=eps)
-    y_norm = F.normalize(y, p=2, dim=-1, eps=eps)
+    x_norm = normalize(x, p=2, dim=-1, eps=eps)
+    y_norm = normalize(y, p=2, dim=-1, eps=eps)
 
     if x_norm.dim() == 2:
         cos_sim = x_norm @ y_norm.T # (N,M)
