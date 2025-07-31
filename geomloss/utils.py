@@ -120,7 +120,7 @@ def distances_euclidean_cosine(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6)) + alpha * cosine_distance(x, y)
 
 
-def distances_sliced(x, y, indices_path, distances_path):
+def distances_sliced(x, y):
     indices_path = 'loss_files/indices.pt'
     distances_path = 'loss_files/distances.txt'
     # --- load index blocks --------------------------------------------------
