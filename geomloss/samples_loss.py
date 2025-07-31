@@ -25,26 +25,17 @@ routines = {
         "online": hausdorff_online,
         "multiscale": hausdorff_multiscale,
     },
-    "energy": {
-        "tensorized": partial(kernel_tensorized, name="energy"),
-        "online": partial(kernel_online, name="energy"),
-        "multiscale": partial(kernel_multiscale, name="energy"),
+    "energy_euclidean": {
+        "tensorized": partial(kernel_tensorized, name="energy_euclidean"),
+        "online": partial(kernel_online, name="energy_euclidean"),
     },
     "energy_l1": {
         "tensorized": partial(kernel_tensorized, name="energy_l1"),
         "online": partial(kernel_online, name="energy_l1"),
     },
-    "energy_rawdispersion_normalized": {
-        "tensorized": partial(kernel_tensorized, name="energy_rawdispersion_normalized"),
-        "online": partial(kernel_online, name="energy_rawdispersion_normalized"),
-    },
-    "energy_perpert_meandiff": {
-        "tensorized": partial(kernel_tensorized, name="energy_perpert_meandiff"),
-        "online": partial(kernel_online, name="energy_perpert_meandiff"),
-    },
-    "energy_perpert_meandiff_clamped": {
-        "tensorized": partial(kernel_tensorized, name="energy_perpert_meandiff_clamped"),
-        "online": partial(kernel_online, name="energy_perpert_meandiff_clamped"),
+    "energy_gene_weighted_euclidean": {
+        "tensorized": partial(kernel_tensorized, name="energy_gene_weighted_euclidean"),
+        "online": partial(kernel_online, name="energy_gene_weighted_euclidean"),
     },
     "energy_euclidean_cosine": {
         "tensorized": partial(kernel_tensorized, name="energy_euclidean_cosine"),

@@ -40,11 +40,11 @@ except:
 from .utils import (
     scal, 
     squared_distances, 
-    distances, 
     l1_distances, 
-    distances_rawdispersion_normalized, 
-    distances_perpert_meandiff, 
-    distances_perpert_meandiff_clamped,
+    squared_distances_weighted, 
+    cosine_distance, 
+    distances_euclidean, 
+    distances_gene_weighted_euclidean,
     distances_euclidean_cosine
 )
 
@@ -86,25 +86,17 @@ def laplacian_kernel(x, y, blur=0.05, use_keops=False, ranges=None):
     return K
 
 
-def energy_kernel(x, y, blur=None, use_keops=False, ranges=None):
+def energy_euclidean_kernel(x, y, blur=None, use_keops=False, ranges=None):
     # N.B.: We never truncate the energy distance kernel
-    return -distances(x, y, use_keops=use_keops)
+    return -distances_euclidean(x, y)
 
 
 def energy_l1_kernel(x, y, blur=None, use_keops=False, ranges=None):
     return -l1_distances(x, y)
 
 
-def energy_rawdispersion_normalized_kernel(x, y, blur=None, use_keops=False, ranges=None):
-    return -distances_rawdispersion_normalized(x, y)
-
-
-def energy_perpert_meandiff_kernel(x, y, blur=None, use_keops=False, ranges=None):
-    return -distances_perpert_meandiff(x, y)
-
-
-def energy_perpert_meandiff_clamped_kernel(x, y, blur=None, use_keops=False, ranges=None):
-    return -distances_perpert_meandiff_clamped(x, y)
+def energy_gene_weighted_euclidean_kernel(x, y, blur=None, use_keops=False, ranges=None):
+    return -distances_gene_weighted_euclidean(x, y)
 
 
 def energy_euclidean_cosine_kernel(x, y, blur=None, use_keops=False, ranges=None):
@@ -114,12 +106,10 @@ def energy_euclidean_cosine_kernel(x, y, blur=None, use_keops=False, ranges=None
 kernel_routines = {
     "gaussian": gaussian_kernel,
     "laplacian": laplacian_kernel,
-    "energy": energy_kernel,
+    "energy_euclidean": energy_euclidean_kernel,
     "energy_l1": energy_l1_kernel,
-    "energy_rawdispersion_normalized": energy_rawdispersion_normalized_kernel,
-    "energy_perpert_meandiff": energy_perpert_meandiff_kernel,
-    "energy_perpert_meandiff_clamped": energy_perpert_meandiff_clamped_kernel,
-    "energy_euclidean_cosine": energy_euclidean_cosine_kernel,
+    "energy_gene_weighted_euclidean": energy_gene_weighted_euclidean_kernel,
+    "energy_euclidean_cosine": energy_euclidean_cosine_kernel
 }
 
 

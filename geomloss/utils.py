@@ -40,7 +40,7 @@ def squared_distances(x, y):
     return D_xx - 2 * D_xy + D_yy
 
 
-def l1_distances(x, y, use_keops=False):
+def l1_distances(x, y):
     if x.dim() == 2:
         x_i = LazyTensor(x[:, None, :])       # (N,1,D)
         y_j = LazyTensor(y[None, :, :])       # (1,M,D)
@@ -103,20 +103,12 @@ def cosine_distance(x, y, eps=1e-6):
     return 1.0 - cos_sim.clamp(-1.0, 1.0)
 
 
-def distances(x, y, use_keops=False):
+def distances_euclidean(x, y):
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
 
 
-def distances_rawdispersion_normalized(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/gene_dispersion_normalized.pt'), 1e-6))
-
-
-def distances_perpert_meandiff(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/perpert_meandiff.pt'), 1e-6))
-
-
-def distances_perpert_meandiff_clamped(x, y):
-    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/perpert_meandiff_clamped.pt'), 1e-6))
+def distances_gene_weighted_euclidean(x, y):
+    return torch.sqrt(torch.clamp_min(squared_distances_weighted(x, y, 'loss_files/gene_weights.pt'), 1e-6))
 
 
 def distances_euclidean_cosine(x, y):
