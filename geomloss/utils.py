@@ -115,6 +115,11 @@ def distances_euclidean_cosine(x, y):
     alpha = float(open('loss_files/alpha.txt').read())
     return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6)) + alpha * cosine_distance(x, y)
 
+
+def distances(x, y): #placeholder
+    return torch.sqrt(torch.clamp_min(squared_distances(x, y), 1e-6))
+
+
 #######################################
 # On grids
 #######################################
