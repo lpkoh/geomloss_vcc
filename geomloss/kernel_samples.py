@@ -105,7 +105,7 @@ def energy_euclidean_cosine_kernel(x, y, blur=None, use_keops=False, ranges=None
 
 
 def energy_sliced_kernel(x, y, blur=None, use_keops=False, ranges=None):
-    return -distances_sliced(x, y, indices_path, distances_path)
+    return -distances_sliced(x, y)
 
 
 kernel_routines = {
